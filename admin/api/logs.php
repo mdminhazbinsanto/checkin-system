@@ -65,16 +65,22 @@ $total = $stmt->fetch()['total'];
 
 // Get logs
 $offset = ($page - 1) * $perPage;
-$query = "SELECT cl.id, u.name, cl.date, 
-    TIME(cl.checkin_time) as checkin_time, 
-    TIME(cl.checkout_time) as checkout_time,
-    cl.duration_minutes as duration,
-    cl.status, cl.ip_address
-    FROM check_log cl 
-    JOIN users u ON cl.user_id = u.id 
-    $whereClause
-    ORDER BY cl.date DESC, cl.checkin_time DESC 
-    LIMIT $perPage OFFSET $offset";
+$query = "SELECT cl.id, u.name, cl.date,                                       
+    TIME(cl.checkin_time) as checkin_time,                                     
+    TIME(cl.checkout_time) as checkout_time,                                   
+    cl.duration_minutes as duration,                                           
+    cl.status, cl.ip_address                                                   
+    FROM check_log cl                                                          
+    JOIN users u ON cl.user_id = u.id                                          
+    $whereClause                                                               
+    ORDER BY cl.date DESC, cl.checkin_time DESC                                
+    LIMIT :limit OFFSET :offset";
+
+// Clone the $params array so we can add the pagination values without         
+// affecting the COUNT query                                                       
+$logParams = $params;                                                          
+$logParams[':limit']  = (int)$perPage;   // bind as integer                    
+$logParams[':offset'] = (int)$offset;    // bind as integer
 
 $stmt = $db->prepare($query);
 $stmt->execute($params);

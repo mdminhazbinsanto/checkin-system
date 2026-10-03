@@ -113,6 +113,12 @@ if ($method === 'GET') {
 
 // POST requests
 if ($method === 'POST') {
+    // CSRF protection: Verify token for all POST actions
+    $csrfToken = $_POST['csrf_token'] ?? '';
+    if (!verifyCSRFToken($csrfToken)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid CSRF token']);
+        exit;
+    }
     $action = $_POST['action'] ?? '';
 
     switch ($action) {

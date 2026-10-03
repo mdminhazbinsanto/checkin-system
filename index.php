@@ -51,7 +51,7 @@ if ($page === 'login') {
     $error = $_GET['error'] ?? '';
     ?>
     <!DOCTYPE html>
-    <html lang="<?php echo $_SESSION['lang'] ?? DEFAULT_LANG; ?>">
+    <html lang="<?php echo htmlspecialchars($_SESSION['lang'] ?? DEFAULT_LANG, ENT_QUOTES, 'UTF-8'); ?>">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">

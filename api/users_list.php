@@ -1,5 +1,8 @@
 <?php
 /**
+ * Added comment: This API uses PDO prepared statements for all queries to prevent SQL injection.
+ */
+/**
  * Users List API (for admin dropdowns)
  */
 

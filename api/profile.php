@@ -53,8 +53,11 @@ switch ($action) {
         }
 
         // Verify current password
-        $stmt = $db->prepare("SELECT password FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
+        // Use a prepared statement with integer cast for user ID to prevent injection
+$stmt = $db->prepare("SELECT password FROM users WHERE id = ?");
+$stmt->bindValue(1, (int)$userId, PDO::PARAM_INT);
+$stmt->execute();
+        
         $user = $stmt->fetch();
 
         if (!$user || !password_verify($currentPass, $user['password'])) {

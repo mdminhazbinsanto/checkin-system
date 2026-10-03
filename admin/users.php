@@ -20,7 +20,8 @@ $csrfToken = generateCSRFToken();
 $db = getDB();
 $users = [];
 if ($db) {
-    $stmt = $db->query("SELECT * FROM users ORDER BY name");
+    $stmt = $db->prepare("SELECT * FROM users ORDER BY name");
+$stmt->execute();
     $users = $stmt->fetchAll();
 }
 ?>
